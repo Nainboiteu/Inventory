@@ -3,6 +3,7 @@ fetch('db/data.json')
     .then(parsedData => {
         // Log the parsed JSON data to the console
         console.log(parsedData);
+        generateArticles(parsedData);
 
         // You can also use JSON.stringify for formatted output
         console.log(JSON.stringify(parsedData, null, 2));
