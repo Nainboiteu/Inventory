@@ -132,9 +132,13 @@ function generateArticles(parsedData) {
 
 // On Load
 // Generate full Article List and display them
-//getAllArticles();
-generateArticles(parsedTest);
+
+// Uncomment when live
 //var ogData = getAllArticles();
+//generateArticles(ogData);
+
+
+generateArticles(parsedTest);
 var ogData = parsedTest;
 /*console.log("getUniqueType");
 console.log(getUniqueType(ogData));
