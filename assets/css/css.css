@@ -1,5 +1,10 @@
 @import url("../font/font.css");
 /* This pen */
+html,
+body {
+	height: 100%;
+}
+
 .pageTitle{
     font-family: "Libre Barcode 39";
     font-size: 16px;
@@ -34,6 +39,7 @@
 }
  .dark {
 	 background: #051923;
+	 min-height: 100%;
 }
  .light {
 	 background: #f3f5f7;
