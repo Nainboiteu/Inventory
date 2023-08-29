@@ -4,7 +4,9 @@ html,
 body {
 	height: 100%;
 }
-
+.tag {
+	
+}
 .pageTitle{
     font-family: "Libre Barcode 39";
     font-size: 16px;
@@ -129,7 +131,7 @@ body {
 	 display: inline-block;
 	 background: rgba(83, 83, 83, 0.4);
 	 border-radius: 3px;
-	 padding: 2.5px 10px;
+	 padding: 5px 10px;
 	 margin: 0 5px 5px 0;
 	 cursor: default;
 	 user-select: none;

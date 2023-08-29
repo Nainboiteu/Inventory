@@ -1,29 +1,30 @@
 [
   {
     "ID": "0123456",
-    "Nom": "AAA",
-    "Description": "",
-    "Quantité": 1,
-    "Localisation": "SDB #1",
-    "SubLocalisation": "Placard2",
-    "Serial": 11112
+    "name": "Perceuse DEWALT",
+    "date":1693312977,
+    "description": "Lorem ipsum dolor sit amet consectetur adipisicing elit. Eligendi, fugiat asperiores inventore beatae accusamus odit minima enim, commodi quia, doloribus eius! Ducimus nemo accusantium maiores velit corrupti tempora reiciendis molestiae repellat vero. Eveniet ipsam adipisci illo iusto quibusdam, sunt neque nulla unde ipsum dolores nobis enim quidem excepturi, illum quos!",
+    "quantity": 1,
+    "localisation": "SDB #1",
+    "sublocalisation": "Placard2",
+    "serial": "SD1-PL2-0123456"
   },
   {
     "ID": "0123457",
-    "Nom": "ABB",
-    "Description": "",
+    "Nom": "Lubrification Moteur",
+    "Description": "Lorem ipsum dolor sit amet consectetur adipisicing elit. Eligendi, fugiat asperiores inventore beatae accusamus odit minima enim, commodi quia, doloribus eius! Ducimus nemo accusantium maiores velit corrupti tempora reiciendis molestiae repellat vero. Eveniet ipsam adipisci illo iusto quibusdam, sunt neque nulla unde ipsum dolores nobis enim quidem excepturi, illum quos!",
     "Quantité": 10,
     "Localisation": "SDB #1",
-    "SubLocalisation": "Placard2",
-    "Serial": "01-01-02"
+    "SubLocalisation": "Placard1",
+    "serial": "SD1-PL1-0123457"
   },
   {
     "ID": "0123458",
-    "Nom": "ACC",
-    "Description": "TEST Description",
+    "Nom": "Projecteur HDMI",
+    "Description": "Lorem ipsum dolor sit amet consectetur adipisicing elit. Eligendi, fugiat asperiores inventore beatae accusamus odit minima enim, commodi quia, doloribus eius! Ducimus nemo accusantium maiores velit corrupti tempora reiciendis molestiae repellat vero. Eveniet ipsam adipisci illo iusto quibusdam, sunt neque nulla unde ipsum dolores nobis enim quidem excepturi, illum quos!",
     "Quantité": "Cabine #1",
     "Localisation": "Penderie #1",
     "SubLocalisation": 102040,
-    "Serial": ""
+    "serial": "CA1-PE1-0123458"
   }
 ]
