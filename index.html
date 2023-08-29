@@ -4,13 +4,17 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+  <link rel="stylesheet" href="assets/css/bootstrap5.min.css">
   <link rel="stylesheet" href="assets/css/css.css">
+  <link rel="stylesheet" href="assets/css/bootstrap-select.min.css">
   <link rel="stylesheet" href="assets/fontawesome/css/fontawesome.min.css">
   <link rel="stylesheet" href="assets/fontawesome/css/all.css">
+  <script src="assets/lib/popper.min.js"></script>
   <title>Your Bootstrap Page</title>
 
   <script src="assets/qr/jquery.min.js"></script>
+  <script src="assets/lib/bootstrap5.bundle.min.js"></script>
+  <script src="assets/lib/bootstrap-select.min.js"></script>
   <script src="assets/qr/qrcode.min.js"></script>
   <script src="assets/qr/qrDisplay.js"></script>
 </head>
@@ -22,34 +26,76 @@
         <div class="text-center pageTitle" id="pageHeaderTitle">Inventaire Urfe</div>
         <div class="text-center pageSubTitle" id="pageHeaderTitle">Inventaire Urfé</div>
       </div>
+      <div class="menu container">
+        <div class="row">
+          <div class="col-12 text-center">
+            <div class="d-flex justify-content-center">
+              <p class="menuTitle" onclick="toggleFilters(event)" id="filterToggle">Rechercher</p>
+              <span class="menu-item-spacing"></span>
+              <p class="menuTitle" onclick="alertJB()">Ajouter</p>
+            </div>
+          </div>
+        </div>
+      </div>
+      <article class="filterContainer postcardFilters dark yellow" style="padding: 30px 0;display:none;"
+        id="filtersBox">
+        <div class="container-fluid">
+          <div class="row">
+            <div class="col text-center">
+              <select class="selectpicker" multiple data-live-search="true" id="filterType" title="Type">
+
+              </select>
+            </div>
+            <div class="col text-center">
+              <select class="selectpicker" multiple data-live-search="true" id="filterQuantity" title="Quantity">
+
+              </select>
+            </div>
+            <div class="col text-center d-flex justify-content-center align-items-center">
+              <div class="form-check form-switch text-center">
+                <input class="form-check-input" type="checkbox" id="flexSwitchCheckFavorite">
+                <label class="form-check-label" for="flexSwitchCheckFavorite">Is favorite?</label>
+              </div>
+            </div>
+            <div class="col text-center">
+              <button type="button" class="btn btn-light" style="color:#051923 !important" onclick="resetFilters()"><i
+                  class="fas fa-rotate-left mr-2" id="btnFiltersReset"></i>Reset</button>
+            </div>
+          </div>
+          <div class="row" style="padding-top: 20px;">
+            <div class="col text-center">
+              <select class="selectpicker" multiple data-live-search="true" id="filterLocation" title="Location">
+
+              </select>
+            </div>
+            <div class="col text-center">
+              <select class="selectpicker" multiple data-live-search="true" id="filterSubLocation" title="SubLocation">
+
+              </select>
+            </div>
+            <div class="col text-center d-flex justify-content-center align-items-center">
+              <div class="form-check form-switch text-center">
+                <input class="form-check-input" type="checkbox" id="flexSwitchCheckRefill">
+                <label class="form-check-label" for="flexSwitchCheckFavorite">Is Refillable?</label>
+              </div>
+            </div>
+            <div class="col text-center">
+              <button type="button" class="btn btn-light" style="color:#051923 !important"
+                onclick="filterData(ogData)"><i class="fas fa-check mr-2" style="vertical-align: middle;"
+                  id="btnFiltersValid"></i>Validate</button>
+            </div>
+          </div>
+        </div>
+      </article>
 
       <div id="articleContainer">
-        <article class="postcard dark blue">
-          <a class="postcard__img_link" href="#">
-            <img class="postcard__img" src="https://picsum.photos/1000/1000" alt="Image Title" />
-          </a>
-          <div class="postcard__text">
-            <h1 class="postcard__title blue cardTitle"><a href="#">Podcast Title</a></h1>
-            <div class="postcard__subtitle small">
-              <time datetime="2020-05-25 12:00:00">
-                <i class="fas fa-calendar-alt mr-2"></i>Mon, May 25th 2020
-              </time>
-            </div>
-            <div class="postcard__bar"></div>
-            <div class="postcard__preview-txt">Lorem ipsum dolor sit amet consectetur adipisicing elit. Eligendi, fugiat
-              asperiores inventore beatae accusamus odit minima enim, commodi quia, doloribus eius! Ducimus nemo
-              accusantium maiores velit corrupti tempora reiciendis molestiae repellat vero. Eveniet ipsam adipisci illo
-              iusto quibusdam, sunt neque nulla unde ipsum dolores nobis enim quidem excepturi, illum quos!</div>
-            <ul class="postcard__tagbox">
-              <li class="tag__item"><i class="fas fa-tag mr-2"></i>Podcast</li>
-              <li class="tag__item"><i class="fas fa-tag mr-2"></i>Podcast</li>
-              <li class="tag__item"><i class="fas fa-clock mr-2"></i>55 mins.</li>
-              <li class="tag__item play blue">
-                <a href="#"><i class="fas fa-play mr-2"></i>Play Episode</a>
-              </li>
-            </ul>
+      </div>
+      <div class="container">
+        <div class="row">
+          <div class="col-12 text-center">
+            <p class="resultRow" id="resultRow"></p>
           </div>
-        </article>
+        </div>
       </div>
     </div>
   </section>
