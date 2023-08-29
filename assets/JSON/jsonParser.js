@@ -14,7 +14,7 @@ fetch('db/data.json')
 
 function generateArticles(parsedData) {
     const container = document.getElementById('container');
-    jsonData.forEach(item => {
+    parsedData.forEach(item => {
         const div = document.createElement('div');
         div.className = 'item'; // You can apply CSS classes here
         div.innerHTML = `<h2>${item.name}</h2><p>${item.description}</p>`;
