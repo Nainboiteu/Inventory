@@ -1,0 +1,29 @@
+[
+  {
+    "ID": "0123456",
+    "Nom": "AAA",
+    "Description": "",
+    "Quantité": 1,
+    "Localisation": "SDB #1",
+    "SubLocalisation": "Placard2",
+    "Serial": 11112
+  },
+  {
+    "ID": "0123457",
+    "Nom": "ABB",
+    "Description": "",
+    "Quantité": 10,
+    "Localisation": "SDB #1",
+    "SubLocalisation": "Placard2",
+    "Serial": "01-01-02"
+  },
+  {
+    "ID": "0123458",
+    "Nom": "ACC",
+    "Description": "TEST Description",
+    "Quantité": "Cabine #1",
+    "Localisation": "Penderie #1",
+    "SubLocalisation": 102040,
+    "Serial": ""
+  }
+]
