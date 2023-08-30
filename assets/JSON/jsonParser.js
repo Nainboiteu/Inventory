@@ -275,7 +275,7 @@ function getSelectedValues(dataId) {
 
     return selectedValues;
 }
-
+var ogData;
 //filterData(ogData);
 // On Demand
 // When filtered, reduce the parsedData list. Click on reset to see the full list again.
@@ -290,68 +290,70 @@ function resetFilters() {
     checkboxRefill.checked = false;
 }
 function filterData(parsedJSON) {
-    var ogJSONLength = parsedJSON.length;
-    // Get Filters Values
-    var filterTypeValues = getSelectedValues("filterType");
-    var filterQuantitiesValues = getSelectedValues("filterQuantity");
-    var filterLocationValues = getSelectedValues("filterLocation");
-    var filterSubLocationValues = getSelectedValues("filterSubLocation");
-    // Toggles
-    var checkboxFavorite = document.getElementById("flexSwitchCheckFavorite");
-    var favIsChecked = checkboxFavorite.checked;
-    var checkboxRefill = document.getElementById("flexSwitchCheckRefill");
-    var refillIsChecked = checkboxRefill.checked;
+    if(parsedJSON){
+        var ogJSONLength = parsedJSON.length;
+        // Get Filters Values
+        var filterTypeValues = getSelectedValues("filterType");
+        var filterQuantitiesValues = getSelectedValues("filterQuantity");
+        var filterLocationValues = getSelectedValues("filterLocation");
+        var filterSubLocationValues = getSelectedValues("filterSubLocation");
+        // Toggles
+        var checkboxFavorite = document.getElementById("flexSwitchCheckFavorite");
+        var favIsChecked = checkboxFavorite.checked;
+        var checkboxRefill = document.getElementById("flexSwitchCheckRefill");
+        var refillIsChecked = checkboxRefill.checked;
 
-    /*console.log("values");
-    console.log(filterTypeValues);
-    console.log(filterQuantitiesValues);
-    console.log(filterLocationValues);
-    console.log(filterSubLocationValues);
-    console.log("Fav " + favIsChecked);
-    console.log("Refill " + refillIsChecked);*/
+        /*console.log("values");
+        console.log(filterTypeValues);
+        console.log(filterQuantitiesValues);
+        console.log(filterLocationValues);
+        console.log(filterSubLocationValues);
+        console.log("Fav " + favIsChecked);
+        console.log("Refill " + refillIsChecked);*/
 
-    // Filter Data based on the filters
+        // Filter Data based on the filters
 
-    if (filterTypeValues.length > 0) {
-        var typeFilteredJSON = parsedJSON.filter(element => filterTypeValues.includes(element.type));
-    } else {
-        var typeFilteredJSON = parsedJSON;
+        if (filterTypeValues.length > 0) {
+            var typeFilteredJSON = parsedJSON.filter(element => filterTypeValues.includes(element.type));
+        } else {
+            var typeFilteredJSON = parsedJSON;
+        }
+
+        if (filterQuantitiesValues.length > 0) {
+            var QuantitiesFilteredJSON = typeFilteredJSON.filter(element => filterQuantitiesValues.includes(element.quantity));
+        } else {
+            var QuantitiesFilteredJSON = typeFilteredJSON;
+        }
+
+        if (filterLocationValues.length > 0) {
+            var locationFilteredJSON = QuantitiesFilteredJSON.filter(element => filterLocationValues.includes(element.location));
+        } else {
+            locationFilteredJSON = QuantitiesFilteredJSON;
+        }
+
+        if (filterSubLocationValues.length > 0) {
+            var sublocationFilteredJSON = locationFilteredJSON.filter(element => filterSubLocationValues.includes(element.sublocation));
+        } else {
+            var sublocationFilteredJSON = locationFilteredJSON;
+        }
+        var finalFilteredJSON = sublocationFilteredJSON;
+        /*console.log(parsedJSON);
+        console.log(finalFilteredJSON);*/
+
+        // Remove all articles
+        var articlesToRemove = document.querySelectorAll('article[id^="articleCreated-"]');
+        articlesToRemove.forEach(function (article) {
+            // Remove the div element from the DOM
+            article.remove();
+        });
+        //console.log(articlesToRemove);
+
+        // Push only filtered articles
+        generateArticles(finalFilteredJSON);
+        var filteredJSONLength = finalFilteredJSON.length;
+        var resultRow = document.getElementById("resultRow");
+        resultRow.innerHTML = filteredJSONLength + " out of a total of " + ogJSONLength + " entries.";
     }
-
-    if (filterQuantitiesValues.length > 0) {
-        var QuantitiesFilteredJSON = typeFilteredJSON.filter(element => filterQuantitiesValues.includes(element.quantity));
-    } else {
-        var QuantitiesFilteredJSON = typeFilteredJSON;
-    }
-
-    if (filterLocationValues.length > 0) {
-        var locationFilteredJSON = QuantitiesFilteredJSON.filter(element => filterLocationValues.includes(element.location));
-    } else {
-        locationFilteredJSON = QuantitiesFilteredJSON;
-    }
-
-    if (filterSubLocationValues.length > 0) {
-        var sublocationFilteredJSON = locationFilteredJSON.filter(element => filterSubLocationValues.includes(element.sublocation));
-    } else {
-        var sublocationFilteredJSON = locationFilteredJSON;
-    }
-    var finalFilteredJSON = sublocationFilteredJSON;
-    /*console.log(parsedJSON);
-    console.log(finalFilteredJSON);*/
-
-    // Remove all articles
-    var articlesToRemove = document.querySelectorAll('article[id^="articleCreated-"]');
-    articlesToRemove.forEach(function (article) {
-        // Remove the div element from the DOM
-        article.remove();
-    });
-    //console.log(articlesToRemove);
-
-    // Push only filtered articles
-    generateArticles(finalFilteredJSON);
-    var filteredJSONLength = finalFilteredJSON.length;
-    var resultRow = document.getElementById("resultRow");
-    resultRow.innerHTML = filteredJSONLength + " out of a total of " + ogJSONLength + " entries.";
 
 }
 
@@ -474,4 +476,6 @@ function addNewArticle() {
 // Add function to modify current articles + click on favorite to make it a favorite
 
 // Add security when closing/refreshing the page to save changes (alert JS if in the creation/edit modal)
+
+// Ajouter liste de fournitures refillable dont la quantité est 0.
 
