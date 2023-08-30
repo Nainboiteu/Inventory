@@ -13,7 +13,7 @@ var parsedTest = [
         "location": "SDB #1",
         "sublocation": "Placard2",
         "serial": "SD1-PL2-0123456",
-        "pic": "1000.jpg",
+        "pic": "",
         "favorite": false,
         "refill": false,
         "state": "Neuf",
@@ -110,7 +110,7 @@ function generateArticles(parsedData) {
         const article = document.createElement('article');
         article.setAttribute('id', 'articleCreated-' + item.ID);
         article.className = 'postcard dark yellow';
-        article.innerHTML = `<a class="postcard__img_link" href="#"> <img class="postcard__img" src="db/img/${item.pic}" alt="Image ${item.ID}" />`
+        article.innerHTML = `<a class="postcard__img_link" href="#"> <img class="postcard__img" src="db/img/${item.pic ? item.pic : '1000.jpg'}" alt="Image ${item.ID}" />`
             + `</a> <div class="postcard__text"> <h1 class="postcard__title yellow cardTitle"><a href="#">&nbsp;[${item.type}] ${item.name}</a></h1> <div class="postcard__subtitle small">`
             + `<div> <i class="fas fa-hashtag mr-2 tag"></i>${item.ID}</div>`
             + `<time datetime="${item.date}"> <i class="fas fa-calendar-alt mr-2 tag"></i>${humaneDate}</time> </div> <div class="postcard__bar"></div>`
