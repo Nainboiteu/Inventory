@@ -380,6 +380,7 @@ pictureUploadInput.addEventListener('change', function (event) {
     if (selectedFile) {
         // Create a new image element
         var imageElement = document.createElement('img');
+        imageElement.setAttribute('id','preUploadPic');
         imageElement.src = URL.createObjectURL(selectedFile); // Create a URL for the selected file
 
         // Replace the content of the placeholder with the image element
@@ -388,16 +389,21 @@ pictureUploadInput.addEventListener('change', function (event) {
     }
 });
 
-function generateUniqueID() {
-    var timestamp = new Date().getTime(); // Get current timestamp in milliseconds
+function generateUniqueID(timestamp) {
     var randomPart = Math.floor(Math.random() * 10000); // Add a random number for uniqueness
     var uniqueID = timestamp + '-' + randomPart;
     return uniqueID;
 }
 
+function generateTimestamp() {
+    var timestamp = new Date().getTime(); // Get current timestamp in milliseconds
+    return timestamp;
+}
+
 function addNewArticle() {
  const fileInput = document.getElementById('pictureUpload');
-  var dateID = generateUniqueID();
+  var timestamp = generateTimestamp();
+  var uniqueID = generateUniqueID(timestamp);
   var dataArray = []; // Create an array to hold the data objects
 
   // Get and Optimize the Image
@@ -448,10 +454,10 @@ function addNewArticle() {
         var stateInput = document.getElementById('state');
 
         var dataObject = {
-          ID: dateID,
+          ID: uniqueID,
           name: nameInput.value,
           type: typeInput.value,
-          date: dateID,
+          date: timestamp,
           description: descriptionInput.value,
           quantity: parseInt(quantityInput.value),
           location: locationInput.value,
@@ -490,7 +496,10 @@ function addNewArticle() {
           .catch(error => {
             console.error('Error when sending json.data:', error);
           });
-
+        // Closing Modal and clearing the fields
+        clearFieldsModal();
+        $('#addArticleModal').modal('hide');
+        console.log(dataArray);
       };
     };
 
@@ -498,6 +507,23 @@ function addNewArticle() {
   }
 }
 
+function clearFieldsModal() {
+    // Clear text inputs
+    document.getElementById('type').value = '';
+    document.getElementById('name').value = '';
+    document.getElementById('description').value = '';
+    document.getElementById('location').value = '';
+    document.getElementById('sublocation').value = '';
+    document.getElementById('quantity').value = '';
+    document.getElementById('date').value = '';
+    document.getElementById('state').value = '';
+    
+    // Clear uploaded image (file input)
+    var pictureUploadInput = document.getElementById('pictureUpload');
+    pictureUploadInput.value = null; // Reset the selected file
+    const preUploadPic = document.getElementById("preUploadPic");
+    preUploadPic.remove();
+}
 // Save changes new/edit
 // eg: floating button to save when there is article to save
 // make a copy of the original, save it by adding the timestamp and replace the db.json with the new one.

@@ -44,7 +44,7 @@
             <div class="d-flex justify-content-center">
               <p class="menuTitle" onclick="toggleFilters(event)" id="filterToggle">Rechercher</p>
               <span class="menu-item-spacing"></span>
-              <p class="menuTitle" onclick="" data-bs-toggle="modal" data-bs-target="#staticBackdrop">Ajouter</p>
+              <p class="menuTitle" onclick="" data-bs-toggle="modal" data-bs-target="#addArticleModal">Ajouter</p>
             </div>
           </div>
         </div>
@@ -111,12 +111,12 @@
       </div>
     </div>
     <!-- Modal -->
-    <div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
-      aria-labelledby="staticBackdropLabel" aria-hidden="true">
+    <div class="modal fade" id="addArticleModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+      aria-labelledby="addArticleModalLabel" aria-hidden="true">
       <div class="modal-dialog">
         <div class="modal-content postcardFilters">
           <div class="modal-header">
-            <h5 class="modal-title" id="staticBackdropLabel">Ajouter un article</h5>
+            <h5 class="modal-title" id="addArticleModalLabel">Ajouter un article</h5>
             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Fermer"></button>
           </div>
           <div class="modal-body">
