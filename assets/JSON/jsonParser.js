@@ -1,6 +1,6 @@
 // Constants
 const optimizeSaveButton = document.getElementById('saveArticle');
-
+var ogData;
 const baseURL = "http://192.168.1.31:7777";
 var parsedTest = [
     {
@@ -66,9 +66,12 @@ function getAllArticles() {
         .then(response => response.json())
         .then(parsedData => {
             // Log the parsed JSON data to the console
-            // console.log(parsedData);
-            return parsedData
-            //generateArticles(parsedData);
+            console.log(parsedData);
+            //return parsedData
+            generateArticles(parsedData);
+            addEntriesToMultiSelects(parsedData);
+	    ogData = parsedData;
+	    return parsedData;
 
             // You can also use JSON.stringify for formatted output
             //console.log(JSON.stringify(parsedData, null, 2));
@@ -137,7 +140,8 @@ function generateArticles(parsedData) {
 
 // Uncomment when live
 var ogData = getAllArticles();
-generateArticles(ogData);
+//console.log(getAllArticles());
+//generateArticles(ogData);
 
 
 //generateArticles(parsedTest);
@@ -150,7 +154,7 @@ console.log("getUniqueSubLocations");
 console.log(getUniqueSublocations(ogData));
 console.log("getUniqueQuantities");
 console.log(getUniqueQuantities(ogData));*/
-addEntriesToMultiSelects(ogData);
+//addEntriesToMultiSelects(ogData);
 
 // Generate list in multi selects
 function getUniqueType(parsedJSON) {
@@ -208,9 +212,12 @@ function getUniqueQuantities(parsedJSON) {
 function addEntriesToMultiSelects(parsedJSON) {
     // Get Unique Values
     var types = getUniqueType(parsedJSON);
+    console.log(types);
     var locations = getUniqueLocation(parsedJSON);
     var sublocations = getUniqueSublocations(parsedJSON);
     var quantities = getUniqueQuantities(parsedJSON);
+    console.log("parsedJSON Add Unique");	
+    console.log(parsedJSON);
 
     // Add entries
     for (let i = 0; i < types.length; i++) {
@@ -241,6 +248,10 @@ function addEntriesToMultiSelects(parsedJSON) {
         option.innerHTML = sublocations[i];
         container.appendChild(option);
     }
+    $('#filterType').selectpicker('refresh');
+    $('#filterQuantity').selectpicker('refresh');
+    $('#filterLocation').selectpicker('refresh');
+    $('#filterSubLocation').selectpicker('refresh');
 }
 
 
@@ -275,8 +286,8 @@ function getSelectedValues(dataId) {
 
     return selectedValues;
 }
-var ogData;
-//filterData(ogData);
+
+filterData(ogData);
 // On Demand
 // When filtered, reduce the parsedData list. Click on reset to see the full list again.
 function resetFilters() {
@@ -290,71 +301,70 @@ function resetFilters() {
     checkboxRefill.checked = false;
 }
 function filterData(parsedJSON) {
-    if(parsedJSON){
-        var ogJSONLength = parsedJSON.length;
-        // Get Filters Values
-        var filterTypeValues = getSelectedValues("filterType");
-        var filterQuantitiesValues = getSelectedValues("filterQuantity");
-        var filterLocationValues = getSelectedValues("filterLocation");
-        var filterSubLocationValues = getSelectedValues("filterSubLocation");
-        // Toggles
-        var checkboxFavorite = document.getElementById("flexSwitchCheckFavorite");
-        var favIsChecked = checkboxFavorite.checked;
-        var checkboxRefill = document.getElementById("flexSwitchCheckRefill");
-        var refillIsChecked = checkboxRefill.checked;
+	if(parsedJSON) {
+    var ogJSONLength = parsedJSON.length;
+    // Get Filters Values
+    var filterTypeValues = getSelectedValues("filterType");
+    var filterQuantitiesValues = getSelectedValues("filterQuantity");
+    var filterLocationValues = getSelectedValues("filterLocation");
+    var filterSubLocationValues = getSelectedValues("filterSubLocation");
+    // Toggles
+    var checkboxFavorite = document.getElementById("flexSwitchCheckFavorite");
+    var favIsChecked = checkboxFavorite.checked;
+    var checkboxRefill = document.getElementById("flexSwitchCheckRefill");
+    var refillIsChecked = checkboxRefill.checked;
 
-        /*console.log("values");
-        console.log(filterTypeValues);
-        console.log(filterQuantitiesValues);
-        console.log(filterLocationValues);
-        console.log(filterSubLocationValues);
-        console.log("Fav " + favIsChecked);
-        console.log("Refill " + refillIsChecked);*/
+    /*console.log("values");
+    console.log(filterTypeValues);
+    console.log(filterQuantitiesValues);
+    console.log(filterLocationValues);
+    console.log(filterSubLocationValues);
+    console.log("Fav " + favIsChecked);
+    console.log("Refill " + refillIsChecked);*/
 
-        // Filter Data based on the filters
+    // Filter Data based on the filters
 
-        if (filterTypeValues.length > 0) {
-            var typeFilteredJSON = parsedJSON.filter(element => filterTypeValues.includes(element.type));
-        } else {
-            var typeFilteredJSON = parsedJSON;
-        }
-
-        if (filterQuantitiesValues.length > 0) {
-            var QuantitiesFilteredJSON = typeFilteredJSON.filter(element => filterQuantitiesValues.includes(element.quantity));
-        } else {
-            var QuantitiesFilteredJSON = typeFilteredJSON;
-        }
-
-        if (filterLocationValues.length > 0) {
-            var locationFilteredJSON = QuantitiesFilteredJSON.filter(element => filterLocationValues.includes(element.location));
-        } else {
-            locationFilteredJSON = QuantitiesFilteredJSON;
-        }
-
-        if (filterSubLocationValues.length > 0) {
-            var sublocationFilteredJSON = locationFilteredJSON.filter(element => filterSubLocationValues.includes(element.sublocation));
-        } else {
-            var sublocationFilteredJSON = locationFilteredJSON;
-        }
-        var finalFilteredJSON = sublocationFilteredJSON;
-        /*console.log(parsedJSON);
-        console.log(finalFilteredJSON);*/
-
-        // Remove all articles
-        var articlesToRemove = document.querySelectorAll('article[id^="articleCreated-"]');
-        articlesToRemove.forEach(function (article) {
-            // Remove the div element from the DOM
-            article.remove();
-        });
-        //console.log(articlesToRemove);
-
-        // Push only filtered articles
-        generateArticles(finalFilteredJSON);
-        var filteredJSONLength = finalFilteredJSON.length;
-        var resultRow = document.getElementById("resultRow");
-        resultRow.innerHTML = filteredJSONLength + " out of a total of " + ogJSONLength + " entries.";
+    if (filterTypeValues.length > 0) {
+        var typeFilteredJSON = parsedJSON.filter(element => filterTypeValues.includes(element.type));
+    } else {
+        var typeFilteredJSON = parsedJSON;
     }
 
+    if (filterQuantitiesValues.length > 0) {
+        var QuantitiesFilteredJSON = typeFilteredJSON.filter(element => filterQuantitiesValues.includes(element.quantity));
+    } else {
+        var QuantitiesFilteredJSON = typeFilteredJSON;
+    }
+
+    if (filterLocationValues.length > 0) {
+        var locationFilteredJSON = QuantitiesFilteredJSON.filter(element => filterLocationValues.includes(element.location));
+    } else {
+        locationFilteredJSON = QuantitiesFilteredJSON;
+    }
+
+    if (filterSubLocationValues.length > 0) {
+        var sublocationFilteredJSON = locationFilteredJSON.filter(element => filterSubLocationValues.includes(element.sublocation));
+    } else {
+        var sublocationFilteredJSON = locationFilteredJSON;
+    }
+    var finalFilteredJSON = sublocationFilteredJSON;
+    /*console.log(parsedJSON);
+    console.log(finalFilteredJSON);*/
+
+    // Remove all articles
+    var articlesToRemove = document.querySelectorAll('article[id^="articleCreated-"]');
+    articlesToRemove.forEach(function (article) {
+        // Remove the div element from the DOM
+        article.remove();
+    });
+    //console.log(articlesToRemove);
+
+    // Push only filtered articles
+    generateArticles(finalFilteredJSON);
+    var filteredJSONLength = finalFilteredJSON.length;
+    var resultRow = document.getElementById("resultRow");
+    resultRow.innerHTML = filteredJSONLength + " out of a total of " + ogJSONLength + " entries.";
+}
 }
 
 
@@ -386,23 +396,21 @@ function generateUniqueID() {
 }
 
 function addNewArticle() {
-    console.log("test");
-    const fileInput = document.getElementById('pictureUpload');
-    var dateID = generateUniqueID();
+ const fileInput = document.getElementById('pictureUpload');
+  var dateID = generateUniqueID();
+  var dataArray = []; // Create an array to hold the data objects
 
-    // Get and Optimize the Image
-    console.log(fileInput.files[0]);
-    const file = fileInput.files[0];
-    if (file) {
-        const reader = new FileReader();
-        console.log(reader);
+  // Get and Optimize the Image
+  const file = fileInput.files[0];
+  if (file) {
+    const reader = new FileReader();
 
-        reader.onload = (event) => {
-            const image = new Image();
-            image.src = event.target.result;
-
-            image.onload = () => {
-                const canvas = document.createElement('canvas');
+    reader.onload = (event) => {
+      const image = new Image();
+      image.src = event.target.result;
+      image.onload = () => {
+        // Image optimization code...
+        const canvas = document.createElement('canvas');
                 const ctx = canvas.getContext('2d');
 
                 const maxWidth = 200;
@@ -429,46 +437,67 @@ function addNewArticle() {
                 const optimizedBase64 = canvas.toDataURL('image/jpeg', 0.7);
                 console.log(optimizedBase64);
 
-                // Get the Article Values
-                // Get references to the input elements
-                var typeInput = document.getElementById('type');
-                var nameInput = document.getElementById('name');
-                var descriptionInput = document.getElementById('description');
-                var locationInput = document.getElementById('location');
-                var sublocationInput = document.getElementById('sublocation');
-                var quantityInput = document.getElementById('quantity');
-                var dateInput = document.getElementById('date');
-                var stateInput = document.getElementById('state');
+        // Get the Article Values
+        var typeInput = document.getElementById('type');
+        var nameInput = document.getElementById('name');
+        var descriptionInput = document.getElementById('description');
+        var locationInput = document.getElementById('location');
+        var sublocationInput = document.getElementById('sublocation');
+        var quantityInput = document.getElementById('quantity');
+        var dateInput = document.getElementById('date');
+        var stateInput = document.getElementById('state');
 
-                // Create an object with the retrieved values
-                var dataObject = {
-                    ID: dateID, // Example ID
-                    name: nameInput.value,
-                    type: typeInput.value,
-                    date: dateID, // Get the current timestamp
-                    description: descriptionInput.value,
-                    quantity: parseInt(quantityInput.value),
-                    location: locationInput.value,
-                    sublocation: sublocationInput.value,
-                    serial: "to be filled", // Example serial number
-                    pic: optimizedBase64, // Base64 Image
-                    favorite: false,
-                    refill: false,
-                    state: stateInput.value,
-                    oldLocal: "",
-                    oldSubLocal: "",
-                    oldSerial: ""
-                };
+        var dataObject = {
+          ID: dateID,
+          name: nameInput.value,
+          type: typeInput.value,
+          date: dateID,
+          description: descriptionInput.value,
+          quantity: parseInt(quantityInput.value),
+          location: locationInput.value,
+          sublocation: sublocationInput.value,
+          serial: "to be filled",
+          pic: optimizedBase64,
+          favorite: false,
+          refill: false,
+          state: stateInput.value,
+          oldLocal: "",
+          oldSubLocal: "",
+          oldSerial: ""
+        };
 
-                // Push the data object into an array
-                var dataArray = [dataObject];
-                console.log(dataArray);
-            }
-        }
+        // Push the data object into the array
+        dataArray.push(dataObject);
+        console.log(dataArray);
+        
+        // Send Request to save the file
 
-        reader.readAsDataURL(file);
-    }
+    
+          const jsonData = JSON.stringify(dataArray, null, 2); // Indented formatting
+          const filename = 'data.json';
+    
+          fetch('assets/php/save-json.php', {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/x-www-form-urlencoded'
+            },
+            body: 'jsonData=' + encodeURIComponent(jsonData) + '&filename=' + encodeURIComponent(filename)
+          })
+          .then(response => response.json())
+          .then(data => {
+            console.log(dataArray);
+          })
+          .catch(error => {
+            console.error('Error when sending json.data:', error);
+          });
+
+      };
+    };
+
+    reader.readAsDataURL(file);
+  }
 }
+
 // Save changes new/edit
 // eg: floating button to save when there is article to save
 // make a copy of the original, save it by adding the timestamp and replace the db.json with the new one.
@@ -476,6 +505,4 @@ function addNewArticle() {
 // Add function to modify current articles + click on favorite to make it a favorite
 
 // Add security when closing/refreshing the page to save changes (alert JS if in the creation/edit modal)
-
-// Ajouter liste de fournitures refillable dont la quantité est 0.
 
