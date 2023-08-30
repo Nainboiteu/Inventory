@@ -1,4 +1,6 @@
 // Constants
+const optimizeSaveButton = document.getElementById('saveArticle');
+
 const baseURL = "http://192.168.1.31:7777";
 var parsedTest = [
     {
@@ -106,7 +108,7 @@ function generateArticles(parsedData) {
         var humaneDate = getHumaneDate(item.date);
         //console.log(humaneDate);
         const article = document.createElement('article');
-        article.setAttribute('id', 'articleCreated-'+item.ID);
+        article.setAttribute('id', 'articleCreated-' + item.ID);
         article.className = 'postcard dark yellow';
         article.innerHTML = `<a class="postcard__img_link" href="#"> <img class="postcard__img" src="db/img/${item.pic}" alt="Image ${item.ID}" />`
             + `</a> <div class="postcard__text"> <h1 class="postcard__title yellow cardTitle"><a href="#">&nbsp;[${item.type}] ${item.name}</a></h1> <div class="postcard__subtitle small">`
@@ -123,7 +125,7 @@ function generateArticles(parsedData) {
             + `</ul>`
             + `<div class="QR" id="QR-${item.ID}"></div> </div>`;
         container.appendChild(article);
-        generateQRDisplay(item.ID,baseURL+"?article="+item.ID);
+        generateQRDisplay(item.ID, baseURL + "?article=" + item.ID);
     });
     var resultRow = document.getElementById("resultRow");
     resultRow.innerHTML = parsedData.length + " entries.";
@@ -339,7 +341,7 @@ function filterData(parsedJSON) {
 
     // Remove all articles
     var articlesToRemove = document.querySelectorAll('article[id^="articleCreated-"]');
-    articlesToRemove.forEach(function(article) {
+    articlesToRemove.forEach(function (article) {
         // Remove the div element from the DOM
         article.remove();
     });
@@ -350,12 +352,121 @@ function filterData(parsedJSON) {
     var filteredJSONLength = finalFilteredJSON.length;
     var resultRow = document.getElementById("resultRow");
     resultRow.innerHTML = filteredJSONLength + " out of a total of " + ogJSONLength + " entries.";
-    
+
 }
 
 
 // Add function to create new articles and generate the QR Code before saving. Ability to save and create a new article. In a modal.
 // Add a way to crop images when creating a new article.
+//Pic Upload
+var pictureUploadInput = document.getElementById('pictureUpload');
+var picturePlaceholder = document.getElementById('picturePlaceholder');
+
+pictureUploadInput.addEventListener('change', function (event) {
+    var selectedFile = event.target.files[0]; // Get the selected file
+
+    if (selectedFile) {
+        // Create a new image element
+        var imageElement = document.createElement('img');
+        imageElement.src = URL.createObjectURL(selectedFile); // Create a URL for the selected file
+
+        // Replace the content of the placeholder with the image element
+        picturePlaceholder.innerHTML = '';
+        picturePlaceholder.appendChild(imageElement);
+    }
+});
+
+function generateUniqueID() {
+    var timestamp = new Date().getTime(); // Get current timestamp in milliseconds
+    var randomPart = Math.floor(Math.random() * 10000); // Add a random number for uniqueness
+    var uniqueID = timestamp + '-' + randomPart;
+    return uniqueID;
+}
+
+function addNewArticle() {
+    console.log("test");
+    const fileInput = document.getElementById('pictureUpload');
+    var dateID = generateUniqueID();
+
+    // Get and Optimize the Image
+    console.log(fileInput.files[0]);
+    const file = fileInput.files[0];
+    if (file) {
+        const reader = new FileReader();
+        console.log(reader);
+
+        reader.onload = (event) => {
+            const image = new Image();
+            image.src = event.target.result;
+
+            image.onload = () => {
+                const canvas = document.createElement('canvas');
+                const ctx = canvas.getContext('2d');
+
+                const maxWidth = 200;
+                const maxHeight = 250;
+
+                let newWidth = image.width;
+                let newHeight = image.height;
+
+                if (image.width > maxWidth) {
+                    newWidth = maxWidth;
+                    newHeight = (image.height * maxWidth) / image.width;
+                }
+
+                if (newHeight > maxHeight) {
+                    newHeight = maxHeight;
+                    newWidth = (image.width * maxHeight) / image.height;
+                }
+
+                canvas.width = newWidth;
+                canvas.height = newHeight;
+
+                ctx.drawImage(image, 0, 0, newWidth, newHeight);
+
+                const optimizedBase64 = canvas.toDataURL('image/jpeg', 0.7);
+                console.log(optimizedBase64);
+
+                // Get the Article Values
+                // Get references to the input elements
+                var typeInput = document.getElementById('type');
+                var nameInput = document.getElementById('name');
+                var descriptionInput = document.getElementById('description');
+                var locationInput = document.getElementById('location');
+                var sublocationInput = document.getElementById('sublocation');
+                var quantityInput = document.getElementById('quantity');
+                var dateInput = document.getElementById('date');
+                var stateInput = document.getElementById('state');
+
+                // Create an object with the retrieved values
+                var dataObject = {
+                    ID: dateID, // Example ID
+                    name: nameInput.value,
+                    type: typeInput.value,
+                    date: dateID, // Get the current timestamp
+                    description: descriptionInput.value,
+                    quantity: parseInt(quantityInput.value),
+                    location: locationInput.value,
+                    sublocation: sublocationInput.value,
+                    serial: "to be filled", // Example serial number
+                    pic: optimizedBase64, // Base64 Image
+                    favorite: false,
+                    refill: false,
+                    state: stateInput.value,
+                    oldLocal: "",
+                    oldSubLocal: "",
+                    oldSerial: ""
+                };
+
+                // Push the data object into an array
+                var dataArray = [dataObject];
+                console.log(dataArray);
+            }
+        }
+
+        reader.readAsDataURL(file);
+    }
+}
 // Save changes new/edit
 // eg: floating button to save when there is article to save
 // make a copy of the original, save it by adding the timestamp and replace the db.json with the new one.

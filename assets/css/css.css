@@ -1,4 +1,16 @@
 @import url("../font/font.css");
+/* Pic Upload */
+.upload-placeholder {
+	background-image: url("../img/uploadPlaceholder.png");
+	min-width: 200px;
+    min-height: 250px;
+	cursor: pointer;
+}
+.upload-placeholder img {
+	border: 12px solid #fff;
+	width: 200px;
+	height: 250px;
+}
 /* This pen */
 html,
 body {

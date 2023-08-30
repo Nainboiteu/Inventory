@@ -9,6 +9,7 @@
   <link rel="stylesheet" href="assets/css/bootstrap-select.min.css">
   <link rel="stylesheet" href="assets/fontawesome/css/fontawesome.min.css">
   <link rel="stylesheet" href="assets/fontawesome/css/all.css">
+
   <script src="assets/lib/popper.min.js"></script>
   <title>Your Bootstrap Page</title>
 
@@ -17,6 +18,7 @@
   <script src="assets/lib/bootstrap-select.min.js"></script>
   <script src="assets/qr/qrcode.min.js"></script>
   <script src="assets/qr/qrDisplay.js"></script>
+
 </head>
 
 <body>
@@ -32,7 +34,7 @@
             <div class="d-flex justify-content-center">
               <p class="menuTitle" onclick="toggleFilters(event)" id="filterToggle">Rechercher</p>
               <span class="menu-item-spacing"></span>
-              <p class="menuTitle" onclick="alertJB()">Ajouter</p>
+              <p class="menuTitle" onclick="" data-bs-toggle="modal" data-bs-target="#staticBackdrop">Ajouter</p>
             </div>
           </div>
         </div>
@@ -94,6 +96,82 @@
         <div class="row">
           <div class="col-12 text-center">
             <p class="resultRow" id="resultRow"></p>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- Modal -->
+    <div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+      aria-labelledby="staticBackdropLabel" aria-hidden="true">
+      <div class="modal-dialog">
+        <div class="modal-content postcardFilters">
+          <div class="modal-header">
+            <h5 class="modal-title" id="staticBackdropLabel">Ajouter un article</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Fermer"></button>
+          </div>
+          <div class="modal-body">
+            <div class="container-fluid">
+              <div class="row mb-3">
+                <div class="col-md-6">
+                  <label for="pictureUpload">
+                    <label for="text2">Photo</label>
+                    <div class="upload-placeholder" id="picturePlaceholder">
+                      <span></span>
+                    </div>
+                  </label>
+                  <input type="file" id="pictureUpload" class="form-control d-none">
+                </div>
+                <div class="col-md-6">
+                  <label for="text2">QR Code</label>
+                  <p><br /><br /><br />Will be automatically generated once saved.</p>
+                </div>
+              </div>
+              <div class="row mb-3">
+                <div class="col-md-6">
+                  <label for="type">Type</label>
+                  <input type="text" id="type" class="form-control" placeholder="Type">
+                </div>
+                <div class="col-md-6">
+                  <label for="name">Name</label>
+                  <input type="text" id="name" class="form-control" placeholder="Name">
+                </div>
+              </div>
+              <div class="row mb-3">
+                <div class="col-md-12">
+                  <label for="description">Description</label>
+                  <textarea id="description" class="form-control" rows="3" placeholder="Description"></textarea>
+                </div>
+              </div>
+              <div class="row mb-3">
+                <div class="col-md-4">
+                  <label for="location">Location</label>
+                  <input type="text" id="location" class="form-control" placeholder="Location">
+                </div>
+                <div class="col-md-4">
+                  <label for="sublocation">Sublocation</label>
+                  <input type="text" id="sublocation" class="form-control" placeholder="Sublocation">
+                </div>
+                <div class="col-md-4">
+                  <label for="quantity">Quantity</label>
+                  <input type="number" id="quantity" class="form-control" placeholder="Quantity">
+                </div>
+              </div>
+              <div class="row mb-3">
+                <div class="col-md-6">
+                  <label for="date">Date</label>
+                  <input type="text" id="date" class="form-control" disabled>
+                </div>
+                <div class="col-md-6">
+                  <label for="state">State</label>
+                  <input type="text" id="state" class="form-control" placeholder="State">
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" onclick="">Annuler</button>
+            <button type="button" class="btn btn-primary" onclick="addNewArticle()">Valider</button>
+            <button type="button" class="btn btn-primary" onclick="">Valider et créer un autre article</button>
           </div>
         </div>
       </div>
